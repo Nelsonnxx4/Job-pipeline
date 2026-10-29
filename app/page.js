@@ -18,7 +18,7 @@ const STATUS_COLOR = {
 const CV_LABEL = {
 	frontend_engineer: "Frontend CV",
 	fullstack_engineer: "Full-Stack CV",
-	software_engineer: "Software CV",
+	web_developer: "Web Developer CV",
 };
 
 const TABS = [

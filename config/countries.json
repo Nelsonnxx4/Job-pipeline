@@ -30,13 +30,13 @@
 		"Vietnam",
 		"Mexico",
 		"South Africa",
+		"Nigeria",
 		"Bulgaria",
 		"Ukraine"
 	],
 	"excluded_with_reason": {
 		"Russia": "Clears the salary floor but most sources this system pulls from don't process hires or payments there due to sanctions.",
 		"India": "Only MNC/FAANG-adjacent roles clear the floor; typical local pay is well under it, and job data doesn't label 'MNC vs local' cleanly.",
-		"Nigeria": "Local pay is well under the floor. Not a target market for local-currency roles.",
 		"Philippines": "Typical pay is well under the floor."
 	},
 	"notes": "Edit eligible_countries to add/remove a country. Matching is case-insensitive substring matching, see lib/filters.js SYNONYMS for abbreviation handling (UK, US, UAE, Dubai, etc)."

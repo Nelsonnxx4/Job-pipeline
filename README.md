@@ -11,7 +11,7 @@ Chimezie. Runs on your PC for testing and on a RackNerd VPS for the daily run.
 cron (7am daily)  ->  POST /api/run
                          |
    1. lib/fetchers/      pull jobs from 9 sources
-   2. lib/filters.js     keep eligible countries, drop duplicates
+   2. lib/filters.js     keep eligible countries and jobs posted within two weeks; exclude senior and unpaid internship roles
    3. lib/scorer.js      score each job, pick the right CV
    4. lib/sheets.js      write the best new matches to the sheet
    5. lib/emailApply.js  find application emails in descriptions
@@ -48,7 +48,7 @@ are ever submitted for you; web forms are always submitted by you.
 
 | File             | What it does                                                                   |
 | ---------------- | ------------------------------------------------------------------------------ |
-| `countries.json` | Countries where mid-level developer pay clears $28K a year.                    |
+| `countries.json` | Countries to include, including Nigeria.                                       |
 | `companies.json` | Company names checked on Greenhouse, Lever, Ashby, BambooHR.                   |
 | `cvMapping.json` | Title and skill keywords that choose between your 3 CVs.                       |
 | `applyKit.json`  | Your details and saved answers for the Apply kit. Replace the `EDIT ME` lines. |
@@ -71,7 +71,7 @@ are ever submitted for you; web forms are always submitted by you.
 | File            | What it does                                                   |
 | --------------- | -------------------------------------------------------------- |
 | `sheets.js`     | All Google Sheet reads and writes.                             |
-| `filters.js`    | Country filter, remote check, duplicate removal.               |
+| `filters.js`    | Country, posting-age, seniority and paid-internship filters; remote check; duplicate removal. |
 | `scorer.js`     | Match score and CV choice. Word lists at the top are editable. |
 | `emailApply.js` | Finds an application email in a job description.               |
 | `linkedin.js`   | Builds LinkedIn search links per company.                      |

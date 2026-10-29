@@ -9,7 +9,7 @@ import path from "path";
 const FILES = {
 	frontend_engineer: "Nelson_Orhembetyoga_Frontend_Developer_Resume.pdf",
 	fullstack_engineer: "Nelson_Orhembetyoga_Full_Stack_Developer_Resume.pdf",
-	software_engineer: "Nelson_Orhembetyoga_Software_Developer_Resume.pdf",
+	web_developer: "Nelson_Orhembetyoga_Web_Developer_Resume.pdf",
 };
 
 export async function GET(request) {

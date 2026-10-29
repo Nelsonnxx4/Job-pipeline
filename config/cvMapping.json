@@ -42,7 +42,6 @@
 			"front end",
 			"react developer",
 			"ui engineer",
-			"web developer",
 			"frontend developer",
 			"frontend engineer"
 		],
@@ -74,16 +73,13 @@
 		"isDefault": true
 	},
 
-	"software_engineer": {
-		"resumeFile": "Nelson_Orhembetyoga_Software_Developer_Resume.pdf",
+	"web_developer": {
+		"resumeFile": "Nelson_Orhembetyoga_Web_Developer_Resume.pdf",
 		"titleKeywords": [
-			"software engineer",
-			"software developer",
-			"software development engineer",
-			"application developer",
-			"computer programmer",
-			"product engineer",
-			"founding engineer",
+			"web developer",
+			"web application developer",
+			"website developer",
+			"web programmer",
 			"full stack",
 			"full-stack",
 			"fullstack"
