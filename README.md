@@ -10,7 +10,7 @@ Chimezie. Runs on your PC for testing and on a RackNerd VPS for the daily run.
 ```
 cron (7am daily)  ->  POST /api/run
                          |
-   1. lib/fetchers/      pull jobs from 9 sources
+   1. lib/fetchers/      pull jobs from remote and Nigeria-focused sources
    2. lib/filters.js     keep eligible countries and jobs posted within two weeks; exclude senior and unpaid internship roles
    3. lib/scorer.js      score each job, pick the right CV
    4. lib/sheets.js      write the best new matches to the sheet
