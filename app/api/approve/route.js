@@ -18,6 +18,7 @@ import {
 	STATUS,
 } from "../../../lib/sheets.js";
 import { sendApplication } from "../../../lib/autoApply.js";
+import { syncNotionApplication, notionJobFromSheet } from "../../../lib/notion.js";
 
 export const maxDuration = 30;
 const ALLOWED_STATUSES = new Set(Object.values(STATUS));
@@ -47,10 +48,13 @@ export async function POST(request) {
 		}
 
 		const rowNumber = Number(row);
+		const all = await getAllJobs();
+		const job = all.find((item) => item._row === rowNumber);
+		if (!job) {
+			return NextResponse.json({ error: "Job row not found" }, { status: 404 });
+		}
 
 		if (status === STATUS.APPROVED) {
-			const all = await getAllJobs();
-			const job = all.find((j) => j._row === rowNumber);
 			const method = (job?.["Submission Method"] || "").trim().toLowerCase();
 			const emailMatch = (job?.Notes || "").match(
 				/[\w.+-]+@[\w-]+(?:\.[\w-]+)+/,
@@ -70,6 +74,11 @@ export async function POST(request) {
 				if (sent) {
 					await updateStatus(rowNumber, STATUS.APPLIED_AUTO);
 					await setFollowUpDate(rowNumber, 7);
+					await syncNotionApplication(
+						notionJobFromSheet(job),
+						STATUS.APPLIED_AUTO,
+						{ createIfMissing: true },
+					);
 					return NextResponse.json({ success: true, sent: true });
 				}
 				// Sending failed: keep it Approved so the next run retries.
@@ -85,6 +94,19 @@ export async function POST(request) {
 		await updateStatus(rowNumber, status);
 		if (FOLLOW_UP_STATUSES.has(status)) {
 			await setFollowUpDate(rowNumber, 7);
+		}
+		if (
+			[
+				STATUS.APPLIED,
+				STATUS.INTERVIEW,
+				STATUS.REJECTED,
+				STATUS.NO_RESPONSE,
+				STATUS.FOLLOWUP_SENT,
+			].includes(status)
+		) {
+			await syncNotionApplication(notionJobFromSheet(job), status, {
+				createIfMissing: status === STATUS.APPLIED,
+			});
 		}
 		return NextResponse.json({ success: true });
 	} catch (err) {

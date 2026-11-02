@@ -137,6 +137,8 @@ export default function Dashboard() {
 	const [kit, setKit] = useState(null);
 	const [openKit, setOpenKit] = useState(null);
 	const [copied, setCopied] = useState(null);
+	const [runningPipeline, setRunningPipeline] = useState(false);
+	const [runResult, setRunResult] = useState(null);
 
 	async function loadJobs() {
 		setLoading(true);
@@ -157,6 +159,25 @@ export default function Dashboard() {
 			if (data.success) setKit(data.kit);
 		} catch (err) {
 			console.error("Failed to load apply kit", err);
+		}
+	}
+
+	async function runPipelineNow() {
+		setRunningPipeline(true);
+		setRunResult(null);
+		try {
+			const res = await fetch("/api/dashboard-run", { method: "POST" });
+			const data = await res.json();
+			setRunResult(data);
+			if (data.success) await loadJobs();
+		} catch (err) {
+			console.error("Failed to run pipeline", err);
+			setRunResult({
+				success: false,
+				error: "The pipeline could not be reached. Try again shortly.",
+			});
+		} finally {
+			setRunningPipeline(false);
 		}
 	}
 
@@ -252,6 +273,13 @@ export default function Dashboard() {
 					<div className="tagline">Nelson&rsquo;s application tracker</div>
 				</div>
 				<div className="headActions">
+					<button
+						className="actionBtn primary"
+						disabled={runningPipeline}
+						onClick={runPipelineNow}
+					>
+						{runningPipeline ? "Running pipeline…" : "Run pipeline"}
+					</button>
 					<button className="ghostBtn" onClick={loadJobs}>
 						Refresh
 					</button>
@@ -260,6 +288,51 @@ export default function Dashboard() {
 					</button>
 				</div>
 			</div>
+
+			{runResult && (
+				<section
+					className={`runPanel ${runResult.success ? "success" : "failed"}`}
+					aria-live="polite"
+				>
+					<div className="runPanelHead">
+						<div>
+							<h2>
+								{runResult.success ? "Pipeline complete" : "Pipeline did not complete"}
+							</h2>
+							<p>
+								{runResult.success
+									? `${runResult.summary?.added || 0} new jobs added to your tracker.`
+									: runResult.error || "Check the run details, then try again."}
+							</p>
+						</div>
+						{runResult.success && (
+							<div className="runSummary">
+								<span>Found {runResult.summary?.raw ?? 0}</span>
+								<span>Eligible {runResult.summary?.eligible ?? 0}</span>
+								<span>Scored {runResult.summary?.scored ?? 0}</span>
+							</div>
+						)}
+					</div>
+
+					{runResult.sources && (
+						<div className="sourceResults">
+							{Object.entries(runResult.sources).map(([source, result]) => (
+								<div className="sourceResult" key={source}>
+									<span>{source}</span>
+									<strong>{result.error ? "Unavailable" : `${result.count} found`}</strong>
+								</div>
+							))}
+						</div>
+					)}
+
+					{runResult.log?.length > 0 && (
+						<details className="runDetails">
+							<summary>View run details</summary>
+							<div>{runResult.log.map((line, index) => <p key={index}>{line}</p>)}</div>
+						</details>
+					)}
+				</section>
+			)}
 
 			<div className="statRow">
 				<div className="stat">

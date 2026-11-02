@@ -102,6 +102,9 @@ daily. `logs/` holds the daily run log.
 | `REQUIRE_REMOTE`                                                                        | `true` drops career-page jobs that don't look remote. Default false.       |
 | `AUTO_SEND_EMAILS`                                                                      | `true` sends strong email-apply matches without your click. Default false. |
 | `MAX_EMAILS_PER_RUN`                                                                    | Cap on automatic emails per run. Default 10.                               |
+| `HIRINGCAFE_ENABLED`                                                                    | Set `false` to skip the small, rate-limited HiringCafe source. Default true. |
+| `HIRINGCAFE_RESULTS_PER_SEARCH`                                                        | HiringCafe results to inspect per targeted search (1–5, default 3).        |
+| `NOTION_API_KEY`, `NOTION_DATA_SOURCE_ID`                                                | Optional Notion application tracker sync.                                  |
 | `CRON_SECRET`                                                                           | Protects `/api/run`.                                                       |
 | `DASHBOARD_USER`, `DASHBOARD_PASSWORD`                                                  | Switch on the dashboard login.                                             |
 | `ALLOW_CLEAR`                                                                           | Enables Clear all. Keep false on the VPS.                                  |
@@ -127,6 +130,26 @@ curl -X POST http://localhost:3000/api/run -H "x-cron-secret: YOUR_CRON_SECRET"
 
 Keep the project in a plain folder such as `C:\Users\YOU\job-pipeline`. Do not
 put it in OneDrive: syncing breaks `node_modules`.
+
+## Notion application tracker (optional)
+
+Create a Notion personal access token with Notion API access, then share your
+job-tracker database with that token. Add its token and **data source ID** to
+`.env` or `.env.local`:
+
+```text
+NOTION_API_KEY=ntn_your_secret_token
+NOTION_DATA_SOURCE_ID=your_data_source_id
+```
+
+The tracker needs a title property plus a URL property called `Job link` (or
+`Link`). Add any of these optional properties to track more detail:
+`Company`, `Status`, `Outcome`, `Applied on`, `Location`, `Employment type`,
+`Match score`, and `Source`.
+
+The pipeline creates a Notion entry only when an application is actually sent
+or marked **Applied**. It then updates that same entry when you mark an
+interview, rejection, no response, or follow-up.
 
 ## Keeping the company list healthy
 

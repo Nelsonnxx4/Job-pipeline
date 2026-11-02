@@ -67,6 +67,7 @@ body {
 .headActions {
   display: flex;
   gap: 10px;
+  align-items: center;
 }
 
 .ghostBtn {
@@ -262,6 +263,89 @@ body {
   background: #2b3a73;
 }
 
+.runPanel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin: 0 0 24px;
+  padding: 20px 24px;
+}
+.runPanel.failed {
+  border-color: #e7b7b1;
+}
+.runPanelHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+.runPanel h2 {
+  color: var(--text);
+  font-family: var(--font-body), -apple-system, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+}
+.runPanel p {
+  color: var(--text-muted);
+  font-size: 13px;
+  margin: 4px 0 0;
+}
+.runSummary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  justify-content: flex-end;
+  text-align: right;
+}
+.sourceResults {
+  display: grid;
+  gap: 8px 16px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 18px;
+}
+.sourceResult {
+  align-items: baseline;
+  border-top: 1px solid var(--border);
+  display: flex;
+  font-size: 13px;
+  gap: 8px;
+  justify-content: space-between;
+  padding-top: 8px;
+}
+.sourceResult span {
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.sourceResult strong {
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.runDetails {
+  margin-top: 18px;
+}
+.runDetails summary {
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 13px;
+}
+.runDetails > div {
+  margin-top: 8px;
+}
+.runDetails p {
+  border-top: 1px solid var(--border);
+  margin: 0;
+  padding: 7px 0;
+}
+
 .empty,
 .loading {
   color: var(--text-faint);
@@ -271,6 +355,27 @@ body {
 }
 
 @media (max-width: 640px) {
+  .pageHead,
+  .runPanelHead {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .headActions {
+    width: 100%;
+  }
+  .headActions > button {
+    flex: 1;
+  }
+  .runPanel {
+    padding: 18px;
+  }
+  .runSummary {
+    justify-content: flex-start;
+    text-align: left;
+  }
+  .sourceResults {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
   .jobRow {
     flex-direction: column;
   }
